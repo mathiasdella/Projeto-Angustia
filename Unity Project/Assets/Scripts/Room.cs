@@ -6,5 +6,4 @@ public class NewBehaviourScript : MonoBehaviour
 {
     public Texture2D[] bgTextures;
 
-
 }

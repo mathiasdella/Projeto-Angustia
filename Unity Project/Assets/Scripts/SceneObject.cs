@@ -10,8 +10,8 @@ public abstract class SceneObject : MonoBehaviour
     public int yOffset;
     public bool isInteractible;
 
-    public abstract void OnInteract();
-    public abstract void OnEnterProximity();
+
+    public abstract bool OnInteract(PlayerController player);  //  Returns true if the object was interacted with.
 
 
 }
