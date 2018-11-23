@@ -26,11 +26,13 @@ public class PlayerController : MonoBehaviour
     public float currentSanity = 100;
     public float maxSanity = 100;
 
-    CharacterState charState = CharacterState.Idle;
-    SanityState sanityState = SanityState.High;
+    public CharacterState charState = CharacterState.Idle;
+    public SanityState sanityState = SanityState.High;
 
-
+    public int orientation = 1;
+    public Animator charAnimator;
     public CharacterController charController;
+    public SpriteRenderer charSpriteRenderer;
 
     private float busyTimer = 0;
 
@@ -52,6 +54,26 @@ public class PlayerController : MonoBehaviour
             if (charController == null)
             {
                 Debug.LogError("CharacterController component not found!");
+            }
+        }
+
+        //  Get the Animator component.
+        if (charAnimator == null)
+        {
+            charAnimator = GetComponent<Animator>();
+            if (charAnimator == null)
+            {
+                Debug.LogError("Animator componenet not found!");
+            }
+        }
+
+        //  Get the SpriteRenderer component.
+        if (charSpriteRenderer == null)
+        {
+            charSpriteRenderer = GetComponent<SpriteRenderer>();
+            if (charSpriteRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer componenet not found!");
             }
         }
 
@@ -81,6 +103,8 @@ public class PlayerController : MonoBehaviour
         //  Character Controls
         CharControls();
 
+        //  Character Animations
+        CharAnimations();
     }
 
     private void CharControls()
@@ -144,7 +168,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //  Check if the player wants to move.
-        if (Mathf.Abs(Input.GetAxis("Horizontal")) > KEY_THRESHOLD)
+        float horizontalAxis = Input.GetAxis("Horizontal");
+        if (Mathf.Abs(horizontalAxis) > KEY_THRESHOLD)
         {
             //  Quit Hiding before moving.
             if (charState == CharacterState.Hiding)
@@ -153,7 +178,6 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            float horizontalAxis = Input.GetAxis("Horizontal");
             bool isRunning = Mathf.Abs(horizontalAxis) > 0.01f && Mathf.Abs(Input.GetAxis("Run")) > 0.01f && (charState == CharacterState.Running || currentStamina >= MIN_RUN_STAMINA);
 
             float ySpeed = charController.isGrounded ? 0 : Physics.gravity.y * dt;
@@ -169,12 +193,40 @@ public class PlayerController : MonoBehaviour
                 charController.Move(new Vector3(walkSpeed * horizontalAxis * dt, ySpeed, 0));
             }
 
+            //  Set the character orientation.
+            orientation = horizontalAxis > 0 ? 1 : -1;
+
             return;
         }
 
         //  Character is Idle.
         charState = CharacterState.Idle;
         return;
+    }
+
+    private void CharAnimations()
+    {
+        if (IsWalking)
+        {
+            charAnimator.SetFloat("speed", 1);
+        }
+        else if (IsRunning)
+        {
+            charAnimator.SetFloat("speed", 2);
+        }
+        else
+        {
+            charAnimator.SetFloat("speed", 0);
+        }
+
+        if (orientation > 0)
+        {
+            charSpriteRenderer.flipX = false;
+        }
+        else if (orientation < 0)
+        {
+            charSpriteRenderer.flipX = true;
+        }
     }
 
     private bool TryInteract()
@@ -214,6 +266,7 @@ public class PlayerController : MonoBehaviour
     {
         busyTimer = busyTime;
         charState = CharacterState.Idle;
+        charAnimator.SetTrigger("interact");
     }
 
     private void OnTriggerEnter(Collider col)
