@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(CapsuleCollider))]
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public const float STAMINA_IDLE_RECOVERY_RATE = 15;
     public const float BREATH_TIME = 1.5f;
     public const float KEY_THRESHOLD = 0.01f;
+    public const float VERTICAL_SPEED = 35f;
+    public const float MAX_VERTICAL = 45;
+    public const float MIN_VERTICAL = -45;
 
 
     public float walkSpeed = 1.0f;
@@ -38,6 +40,8 @@ public class PlayerController : MonoBehaviour
 
     private List<SceneObject> nearbyObjects;
     private int selectedObj = 0;
+
+    private Transform handPivot;
 
     public bool IsIdle { get { return charState == CharacterState.Idle; } }
     public bool IsWalking { get { return charState == CharacterState.Walking; } }
@@ -77,6 +81,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //  Get the hand pivot transform
+        if (handPivot == null)
+        {
+            handPivot = transform.Find("Hand Pivot");
+            if (handPivot == null)
+            {
+                Debug.LogError("Hand Pivot not found!");
+            }
+        }
+
         //  Set starting stats.
         currentStamina = maxStamina;
         currentStress = 0;
@@ -90,7 +104,14 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-
+        for (int i = 0; i < 10; i++)
+        {
+            if (charController.isGrounded)
+            {
+                break;
+            }
+            charController.Move(Physics.gravity);
+        }
     }
 
     private void Update()
@@ -167,6 +188,35 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //  Check if the player wants to move the flashlight.
+        float verticalAxis = Input.GetAxis("Vertical");
+        if (Mathf.Abs(verticalAxis) > KEY_THRESHOLD)
+        {
+            float zRotation = handPivot.transform.rotation.eulerAngles.z;
+            while (zRotation < 0)
+            {
+                zRotation = zRotation + 360;
+            }
+            while (zRotation > 360)
+            {
+                zRotation = zRotation - 360;
+            }
+
+            zRotation = zRotation + verticalAxis * VERTICAL_SPEED * dt * transform.localScale.x;
+
+            if (zRotation > MAX_VERTICAL && zRotation <= 180)
+            {
+                zRotation = MAX_VERTICAL;
+            }
+            else if (zRotation < 360 + MIN_VERTICAL && zRotation > 180)
+            {
+                zRotation = 360 + MIN_VERTICAL;
+            }
+
+            Vector3 targetEulers = new Vector3(0, 0, zRotation);
+            handPivot.eulerAngles = targetEulers;
+        }
+
         //  Check if the player wants to move.
         float horizontalAxis = Input.GetAxis("Horizontal");
         if (Mathf.Abs(horizontalAxis) > KEY_THRESHOLD)
@@ -221,11 +271,13 @@ public class PlayerController : MonoBehaviour
 
         if (orientation > 0)
         {
-            charSpriteRenderer.flipX = false;
+            transform.localScale = new Vector3(1, 1, 1);
+            //charSpriteRenderer.flipX = false;
         }
         else if (orientation < 0)
         {
-            charSpriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
+            //charSpriteRenderer.flipX = true;
         }
     }
 
