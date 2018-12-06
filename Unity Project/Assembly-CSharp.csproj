@@ -61,12 +61,67 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\AttachCamera.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\BikeController.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoFollowMouse.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoLightColorChange.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoLightFlicker.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoSceneManager.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\UniversalPhysics.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingCollider2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingManager2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingRoom2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingSource2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingSprite2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingSpriteRenderer.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingTileMap.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\LightingBuffer2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\LightingMainBuffer2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\LightingOcclussion.cs" />
+    <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\LightingSoftDayShadows.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Components\ColliderBevelRenderer2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Components\ColliderLineRenderer2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Components\JointLineRenderer2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Components\Mesh2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Components\Mesh3D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Cuts\ComplexCut.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Cuts\LinearCut.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Graphics\Max2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Graphics\Max2DMatrix.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Graphics\Max2DMesh.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Graphics\Max2DParticles.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\DelaunayTriangle.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\DTSweepUtility.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\PolygonUtility.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\TriangulationAlgorithm.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\TriangulationAlgorithmUtility.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\TriangulationSets.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\TriangulationUtility.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\Advanced Triangulator\TriangulationWrapper.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\DefaultTriagulator\Triangulator.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Triangulation\PolygonTriangulator2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\DestroyTimer.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\DoublePair2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Joint2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Math2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Mathd.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Pair2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Particle2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Physics2DHelper.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Polygon2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Polygon2DList.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\TimerHelper.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Vector2D.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Vector2DList.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\VirtualSpriteRenderer.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\VirtualTransform.cs" />
     <Compile Include="Assets\Scripts\GameMaster.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Room.cs" />
     <Compile Include="Assets\Scripts\SceneObject.cs" />
     <Compile Include="Assets\Scripts\SceneObjects\FuseBox.cs" />
     <Compile Include="Assets\Scripts\SceneObjects\Wardrobe.cs" />
+    <None Include="Assets\FunkyCode\SmartLighting2D\Components\Resources\Shaders\SpriteWhite.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/mathi/Documents/GitHub/Projeto-Angustia/Unity Project/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

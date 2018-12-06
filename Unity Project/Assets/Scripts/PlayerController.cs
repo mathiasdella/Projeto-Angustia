@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public const float VERTICAL_SPEED = 35f;
     public const float MAX_VERTICAL = 45;
     public const float MIN_VERTICAL = -45;
+    public const float FLASHLIGHT_BATTERY_DURATION = 120.0f;
 
 
     public float walkSpeed = 1.0f;
@@ -27,6 +28,8 @@ public class PlayerController : MonoBehaviour
 
     public float currentSanity = 100;
     public float maxSanity = 100;
+
+    public float flashLightBattery = 120.0f;
 
     public CharacterState charState = CharacterState.Idle;
     public SanityState sanityState = SanityState.High;
@@ -42,12 +45,15 @@ public class PlayerController : MonoBehaviour
     private int selectedObj = 0;
 
     private Transform handPivot;
+    private Transform flashlight;
 
     public bool IsIdle { get { return charState == CharacterState.Idle; } }
     public bool IsWalking { get { return charState == CharacterState.Walking; } }
     public bool IsRunning { get { return charState == CharacterState.Running; } }
     public bool IsHiding { get { return charState == CharacterState.Hiding; } }
     public bool IsBusy { get { return charState == CharacterState.Busy; } }
+
+    public bool IsFlashlightOn { get { return flashlight.gameObject.activeSelf; } }
 
     private void Awake()
     {
@@ -91,10 +97,21 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //  Get the flashlight transform.
+        if (flashlight == null)
+        {
+            flashlight = handPivot.Find("Flashlight");
+            if (flashlight == null)
+            {
+                Debug.LogError("Flashlight not found!");
+            }
+        }
+
         //  Set starting stats.
         currentStamina = maxStamina;
         currentStress = 0;
         currentSanity = maxSanity;
+        flashLightBattery = 120.0f;
         charState = CharacterState.Idle;
         sanityState = SanityState.High;
 
@@ -104,14 +121,14 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            if (charController.isGrounded)
-            {
-                break;
-            }
-            charController.Move(Physics.gravity);
-        }
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    if (charController.isGrounded)
+        //    {
+        //        break;
+        //    }
+        //    charController.Move(Physics.gravity);
+        //}
     }
 
     private void Update()
@@ -131,6 +148,17 @@ public class PlayerController : MonoBehaviour
     private void CharControls()
     {
         float dt = Time.fixedDeltaTime;
+
+        //  Check flashlight battery.
+        if (IsFlashlightOn)
+        {
+            flashLightBattery -= dt;
+            if (flashLightBattery <= 0)
+            {
+                flashLightBattery = 0;
+                flashlight.gameObject.SetActive(false);
+            }
+        }
 
         //  Ignore controls if character is busy.
         if (busyTimer > 0)
@@ -174,8 +202,21 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        //  Toggle flashlight controls.
+        if (Input.GetButtonUp("Flashlight"))
+        {
+            if (IsFlashlightOn)
+            {
+                flashlight.gameObject.SetActive(false);
+            }
+            else if (flashLightBattery > 0)
+            {
+                flashlight.gameObject.SetActive(true);
+            }
+        }
+
         //  Check if the player wants to interact with an object.
-        if (Mathf.Abs(Input.GetAxis("Interact")) > KEY_THRESHOLD)
+        if (Input.GetButtonUp("Interact"))
         {
             //  Attempt to interact with an object.
             if (TryInteract())
@@ -230,7 +271,8 @@ public class PlayerController : MonoBehaviour
 
             bool isRunning = Mathf.Abs(horizontalAxis) > 0.01f && Mathf.Abs(Input.GetAxis("Run")) > 0.01f && (charState == CharacterState.Running || currentStamina >= MIN_RUN_STAMINA);
 
-            float ySpeed = charController.isGrounded ? 0 : Physics.gravity.y * dt;
+            //float ySpeed = charController.isGrounded ? 0 : Physics.gravity.y * dt;
+            float ySpeed = 0;
 
             if (isRunning)
             {
