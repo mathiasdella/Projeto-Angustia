@@ -4,7 +4,7 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 public class LightingSource2D : MonoBehaviour {
-	public enum TextureSize {px1024, px512, px256, px128};
+	public enum TextureSize {px2048, px1024, px512, px256, px128};
 	public enum LightSprite {Default, Custom};
 
 	public Color lightColor = new Color(.5f,.5f, .5f, 1);
@@ -26,6 +26,14 @@ public class LightingSource2D : MonoBehaviour {
 	
 	public bool update = true;
 
+	public static Sprite defaultSprite = null;
+	static public Sprite GetDefaultSprite() {
+		if (defaultSprite == null) {
+			defaultSprite = Resources.Load <Sprite> ("Sprites/gfx_light");
+		}
+		return(defaultSprite);
+	}
+
 	public static List<LightingSource2D> list = new List<LightingSource2D>();
 
 	public void OnEnable() {
@@ -43,6 +51,9 @@ public class LightingSource2D : MonoBehaviour {
 
 	public int GetTextureSize() {
 		switch(textureSize) {
+			case TextureSize.px2048:
+				return(2048);
+
 			case TextureSize.px1024:
 				return(1024);
 
@@ -62,7 +73,7 @@ public class LightingSource2D : MonoBehaviour {
 	}
 
 	public void SetMaterial() {
-		material = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Multiply"));
+		material = new Material (Shader.Find (Max2D.shaderPath + "Particles/Multiply"));
 		material.mainTexture = GetSprite().texture;
 
 		update = true;
@@ -70,7 +81,7 @@ public class LightingSource2D : MonoBehaviour {
 
 	public Sprite GetSprite() {
 		if (sprite == null) {
-			sprite = Resources.Load <Sprite> ("Sprites/gfx_light") ;
+			sprite = GetDefaultSprite();
 		}
 		return(sprite);
 	}

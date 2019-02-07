@@ -12,6 +12,8 @@ public class LightingCollider2DEditor : Editor {
 		EditorGUI.BeginDisabledGroup(true);
 		EditorGUILayout.EnumPopup("Preset", LightingManager2D.Get().preset);
 		EditorGUI.EndDisabledGroup();
+
+		script.maskType = (LightingCollider2D.MaskType)EditorGUILayout.EnumPopup("MaskType", script.maskType);
 		
 		script.dayHeight = EditorGUILayout.Toggle("Day Height", script.dayHeight);
 		if (script.dayHeight)  {

@@ -64,9 +64,12 @@
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\AttachCamera.cs" />
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\BikeController.cs" />
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoFollowMouse.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoFpsHelper.cs" />
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoLightColorChange.cs" />
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoLightFlicker.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoMainManager.cs" />
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoSceneManager.cs" />
+    <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\DemoTabs.cs" />
     <Compile Include="Assets\FunkyCode\Demos - SmartLighting2D\Scripts\UniversalPhysics.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingCollider2D.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Components\LightingManager2D.cs" />
@@ -115,13 +118,20 @@
     <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\Vector2DList.cs" />
     <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\VirtualSpriteRenderer.cs" />
     <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\VirtualTransform.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\UI\UICanvasScale.cs" />
+    <Compile Include="Assets\FunkyCode\SmartUtilities2D\UI\UITextScale.cs" />
+    <Compile Include="Assets\Scripts\CharacterController2D.cs" />
     <Compile Include="Assets\Scripts\GameMaster.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Room.cs" />
     <Compile Include="Assets\Scripts\SceneObject.cs" />
     <Compile Include="Assets\Scripts\SceneObjects\FuseBox.cs" />
+    <Compile Include="Assets\Scripts\SceneObjects\Lamp.cs" />
     <Compile Include="Assets\Scripts\SceneObjects\Wardrobe.cs" />
+    <Compile Include="Assets\Scripts\TutorialEvent.cs" />
+    <Compile Include="Assets\Scripts\WardrobeCatEvent.cs" />
     <None Include="Assets\FunkyCode\SmartLighting2D\Components\Resources\Shaders\SpriteWhite.shader" />
+    <None Include="Assets\FunkyCode\SmartLighting2D\Changelog.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/mathi/Documents/GitHub/Projeto-Angustia/Unity Project/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

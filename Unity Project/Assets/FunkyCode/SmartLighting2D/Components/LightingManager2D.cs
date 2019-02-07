@@ -4,7 +4,7 @@ using UnityEngine;
 
 [ExecuteInEditMode] // Only 1 Lighting Manager Allowed
 public class LightingManager2D : MonoBehaviour {
-	public enum Preset {TopDown, SideScroller, Isometric};
+	public enum Preset {Default, TopDown, SideScroller, Isometric};
 	private static LightingManager2D instance;
 
 	public Preset preset = Preset.TopDown;
@@ -29,8 +29,6 @@ public class LightingManager2D : MonoBehaviour {
 
 	static public int lightingLayer = 8;
 
-	public const string shaderPath = "";
-
 	static public LightingManager2D Get() {
 		if (instance != null) {
 			return(instance);
@@ -54,19 +52,19 @@ public class LightingManager2D : MonoBehaviour {
 		instance = this;
 
 		// Lighting Materials
-		additiveMaterial = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Additive"));
+		additiveMaterial = new Material (Shader.Find (Max2D.shaderPath + "Particles/Additive"));
 		//additiveMaterial.mainTexture = Resources.Load ("textures/additive") as Texture;
 
-		penumbraMaterial = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Multiply"));
+		penumbraMaterial = new Material (Shader.Find (Max2D.shaderPath + "Particles/Multiply"));
 		penumbraMaterial.mainTexture = Resources.Load ("textures/penumbra") as Texture;
 
-		occlusionEdgeMaterial = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Multiply"));
+		occlusionEdgeMaterial = new Material (Shader.Find (Max2D.shaderPath + "Particles/Multiply"));
 		occlusionEdgeMaterial.mainTexture = Resources.Load ("textures/occlusionedge") as Texture;
 
-		shadowBlurMaterial = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Multiply"));
+		shadowBlurMaterial = new Material (Shader.Find (Max2D.shaderPath + "Particles/Multiply"));
 		shadowBlurMaterial.mainTexture = Resources.Load ("textures/shadowblur") as Texture;
 
-		occlusionBlurMaterial = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Multiply"));
+		occlusionBlurMaterial = new Material (Shader.Find (Max2D.shaderPath + "Particles/Multiply"));
 		occlusionBlurMaterial.mainTexture = Resources.Load ("textures/occlussionblur") as Texture;
 
 		whiteSpriteMaterial = new Material (Shader.Find ("SmartLighting2D/SpriteWhite"));

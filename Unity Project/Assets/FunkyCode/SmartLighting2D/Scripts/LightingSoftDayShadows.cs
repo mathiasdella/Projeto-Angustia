@@ -20,18 +20,22 @@ public class LightingSoftDayShadows {
 			if (id.dayHeight == false || id.height <= 0) {
 				continue;
 			}
-			Polygon2D poly = id.GetPolygon();
-			poly = poly.ToWorldSpace (id.gameObject.transform);
-			
-			foreach (Pair2D p in Pair2D.GetList(poly.pointsList)) {
-				Vector2D vA = p.A.Copy();
-				Vector2D vB = p.B.Copy();
+			List<Polygon2D> polygons = id.GetPolygons();
 
-				vA.Push (sunDirection, id.height);
-				vB.Push (sunDirection, id.height);
+			foreach(Polygon2D polygon in polygons) {
+				Polygon2D poly = polygon;
+				poly = poly.ToWorldSpace (id.gameObject.transform);
+				
+				foreach (Pair2D p in Pair2D.GetList(poly.pointsList)) {
+					Vector2D vA = p.A.Copy();
+					Vector2D vB = p.B.Copy();
 
-				Max2DMatrix.DrawTriangle(p.A, p.B, vA, offset, z);
-				Max2DMatrix.DrawTriangle(vA, vB, p.B, offset, z);
+					vA.Push (sunDirection, id.height);
+					vB.Push (sunDirection, id.height);
+
+					Max2DMatrix.DrawTriangle(p.A, p.B, vA, offset, z);
+					Max2DMatrix.DrawTriangle(vA, vB, p.B, offset, z);
+				}
 			}
 		}
 
@@ -47,43 +51,47 @@ public class LightingSoftDayShadows {
 			if (id.dayHeight == false || id.height <= 0) {
 				continue;
 			}
-			Polygon2D poly = id.GetPolygon();
-			poly = poly.ToWorldSpace (id.gameObject.transform);
-			
-			Polygon2D convexHull = Polygon2D.GenerateShadow(new Polygon2D(poly.pointsList), sunDirection, id.height);
-			
-			foreach (DoublePair2D p in DoublePair2D.GetList(convexHull.pointsList)) {
-				Vector2D zA = new Vector2D (p.A + offset);
-				Vector2D zB = new Vector2D (p.B + offset);
-				Vector2D zC = zB.Copy();
+			List<Polygon2D> polygons = id.GetPolygons();
 
-				Vector2D pA = zA.Copy();
-				Vector2D pB = zB.Copy();
+			foreach(Polygon2D polygon in polygons) {
+				Polygon2D poly = polygon;
+				poly = poly.ToWorldSpace (id.gameObject.transform);
+				
+				Polygon2D convexHull = Polygon2D.GenerateShadow(new Polygon2D(poly.pointsList), sunDirection, id.height);
+				
+				foreach (DoublePair2D p in DoublePair2D.GetList(convexHull.pointsList)) {
+					Vector2D zA = new Vector2D (p.A + offset);
+					Vector2D zB = new Vector2D (p.B + offset);
+					Vector2D zC = zB.Copy();
 
-				zA.Push (Vector2D.Atan2 (p.A, p.B) + pi2, .5f);
-				zB.Push (Vector2D.Atan2 (p.A, p.B) + pi2, .5f);
-				zC.Push (Vector2D.Atan2 (p.B, p.C) + pi2, .5f);
+					Vector2D pA = zA.Copy();
+					Vector2D pB = zB.Copy();
+
+					zA.Push (Vector2D.Atan2 (p.A, p.B) + pi2, .5f);
+					zB.Push (Vector2D.Atan2 (p.A, p.B) + pi2, .5f);
+					zC.Push (Vector2D.Atan2 (p.B, p.C) + pi2, .5f);
+					
+					GL.TexCoord2 (uv0, uv0);
+					Max2D.Vertex3 (pB, z);
+					GL.TexCoord2 (0.5f - uv0, uv0);
+					Max2D.Vertex3 (pA, z);
+					GL.TexCoord2 (0.5f - uv0, uv1);
+					Max2D.Vertex3 (zA, z);
 				
-				GL.TexCoord2 (uv0, uv0);
-				Max2D.Vertex3 (pB, z);
-				GL.TexCoord2 (0.5f - uv0, uv0);
-				Max2D.Vertex3 (pA, z);
-				GL.TexCoord2 (0.5f - uv0, uv1);
-				Max2D.Vertex3 (zA, z);
-			
-				GL.TexCoord2 (uv0, uv1);
-				Max2D.Vertex3 (zA, z);
-				GL.TexCoord2 (0.5f - uv0, uv1);
-				Max2D.Vertex3 (zB, z);
-				GL.TexCoord2 (0.5f - uv0, uv0);
-				Max2D.Vertex3 (pB, z);
-				
-				GL.TexCoord2 (uv0, uv1);
-				Max2D.Vertex3 (zB, z);
-				GL.TexCoord2 (0.5f - uv0, uv0);
-				Max2D.Vertex3 (pB, z);
-				GL.TexCoord2 (0.5f - uv0, uv1);
-				Max2D.Vertex3 (zC, z);
+					GL.TexCoord2 (uv0, uv1);
+					Max2D.Vertex3 (zA, z);
+					GL.TexCoord2 (0.5f - uv0, uv1);
+					Max2D.Vertex3 (zB, z);
+					GL.TexCoord2 (0.5f - uv0, uv0);
+					Max2D.Vertex3 (pB, z);
+					
+					GL.TexCoord2 (uv0, uv1);
+					Max2D.Vertex3 (zB, z);
+					GL.TexCoord2 (0.5f - uv0, uv0);
+					Max2D.Vertex3 (pB, z);
+					GL.TexCoord2 (0.5f - uv0, uv1);
+					Max2D.Vertex3 (zC, z);
+				}
 			}
 		}
 
@@ -96,7 +104,7 @@ public class LightingSoftDayShadows {
 		GL.Color(Color.black);
 
 		// Day Soft Shadows
-		foreach (LightingTileMap id in LightingTileMap.GetList()) {
+		foreach (LightingTilemapCollider2D id in LightingTilemapCollider2D.GetList()) {
 			if (id.map == null) {
 				continue;
 			}
@@ -121,7 +129,7 @@ public class LightingSoftDayShadows {
 		Max2D.SetColor (Color.white);
 		
 		// Day Soft Shadows
-		foreach (LightingTileMap id in LightingTileMap.GetList()) {
+		foreach (LightingTilemapCollider2D id in LightingTilemapCollider2D.GetList()) {
 			if (id.map == null) {
 				continue;
 			}
@@ -162,7 +170,7 @@ public class LightingSoftDayShadows {
 		}
 
 		material = LightingManager2D.Get().additiveMaterial;
-		foreach (LightingSpriteRenderer id in LightingSpriteRenderer.GetList()) {
+		foreach (LightingSpriteRenderer2D id in LightingSpriteRenderer2D.GetList()) {
 			if (id.sprite == null) {
 				continue;
 			}
@@ -170,6 +178,16 @@ public class LightingSoftDayShadows {
 
 			Vector2 position = id.transform.position;
 			Vector2 scale = id.transform.lossyScale;
+
+			float scaleX = (float) id.sprite.texture.width / (id.sprite.pixelsPerUnit * 2);
+			float scaleY = (float) id.sprite.texture.width / (id.sprite.pixelsPerUnit * 2);
+			//Debug.Log(scaleX + " " + scaleY);
+
+			scale.x *= scaleX;
+			scale.y *= scaleY;
+
+			scale.x *= id.scale.x;
+			scale.y *= id.scale.y;
 
 			if (id.flipX) {
 				scale.x = -scale.x;
@@ -180,8 +198,11 @@ public class LightingSoftDayShadows {
 			}
 
 			//material.color = id.color;
-			material.SetColor ("_TintColor", id.color);
-			Max2D.DrawImage(material, offset.ToVector2() + position, scale, id.transform.rotation.eulerAngles.z, z);
+			Color color = id.color;
+			color.a = id.alpha;
+
+			material.SetColor ("_TintColor", color);
+			Max2D.DrawImage(material, offset.ToVector2() + position + id.offset, scale, id.transform.rotation.eulerAngles.z, z);
 		}
 
 		material.mainTexture = null;

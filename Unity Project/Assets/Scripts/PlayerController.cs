@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(CharacterController))]
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,9 +33,8 @@ public class PlayerController : MonoBehaviour
     public CharacterState charState = CharacterState.Idle;
     public SanityState sanityState = SanityState.High;
 
-    public int orientation = 1;
     public Animator charAnimator;
-    public CharacterController charController;
+    public CharacterController2D charController;
     public SpriteRenderer charSpriteRenderer;
 
     private float busyTimer = 0;
@@ -60,7 +58,7 @@ public class PlayerController : MonoBehaviour
         //  Get the CharacterController component.
         if (charController == null)
         {
-            charController = GetComponent<CharacterController>();
+            charController = GetComponent<CharacterController2D>();
             if (charController == null)
             {
                 Debug.LogError("CharacterController component not found!");
@@ -284,10 +282,7 @@ public class PlayerController : MonoBehaviour
                 charState = CharacterState.Walking;
                 charController.Move(new Vector3(walkSpeed * horizontalAxis * dt, ySpeed, 0));
             }
-
-            //  Set the character orientation.
-            orientation = horizontalAxis > 0 ? 1 : -1;
-
+            
             return;
         }
 
@@ -309,17 +304,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             charAnimator.SetFloat("speed", 0);
-        }
-
-        if (orientation > 0)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-            //charSpriteRenderer.flipX = false;
-        }
-        else if (orientation < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-            //charSpriteRenderer.flipX = true;
         }
     }
 
@@ -363,7 +347,7 @@ public class PlayerController : MonoBehaviour
         charAnimator.SetTrigger("interact");
     }
 
-    private void OnTriggerEnter(Collider col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (col == null)
         {
@@ -377,7 +361,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider col)
+    private void OnTriggerExit2D(Collider2D col)
     {
         if (col == null)
         {

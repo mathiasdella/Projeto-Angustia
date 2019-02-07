@@ -18,18 +18,21 @@ public class LightingSource2DEditor : Editor {
 		if (script.lightColor.Equals(newColor) == false) {
 			newColor.a = 1f;
 			script.lightColor = newColor;
+			
 			LightingMainBuffer2D.ForceUpdate();
 		}
 
 		float newAlpha = EditorGUILayout.Slider("Alhpa", script.lightAlpha, 0, 1);
 		if (script.lightAlpha != newAlpha) {
 			script.lightAlpha = newAlpha;
+
 			LightingMainBuffer2D.ForceUpdate();
 		}
 
 		float newLightSize = EditorGUILayout.FloatField("Size", script.lightSize);
 		if (newLightSize != script.lightSize) {
 			script.lightSize = newLightSize;
+
 			LightingMainBuffer2D.ForceUpdate();
 		}
 		
@@ -41,6 +44,15 @@ public class LightingSource2DEditor : Editor {
 			if (newSprite != script.sprite) {
 				script.sprite = newSprite;
 				script.SetMaterial();
+
+				LightingMainBuffer2D.ForceUpdate();
+			}
+		} else {
+			if (script.sprite != LightingSource2D.GetDefaultSprite()) {
+				script.sprite = LightingSource2D.GetDefaultSprite();
+				script.SetMaterial();
+
+				LightingMainBuffer2D.ForceUpdate();
 			}
 		}
 

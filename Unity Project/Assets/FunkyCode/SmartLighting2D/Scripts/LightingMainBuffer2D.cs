@@ -62,7 +62,7 @@ public class LightingMainBuffer2D : MonoBehaviour {
 	}
 
 	void SetUpRenderMaterial() {
-		material = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Multiply"));
+		material = new Material (Shader.Find (Max2D.shaderPath + "Particles/Multiply"));
 		material.mainTexture = renderTexture;
 	}
 

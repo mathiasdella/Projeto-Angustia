@@ -100,31 +100,87 @@ public class LightingBuffer2D : MonoBehaviour {
 
 		if (lightSource.rotationEnabled) {
 			Max2D.DrawImage(lightSource.GetMaterial (), Vector2.zero, size, lightSource.transform.rotation.eulerAngles.z, z);
+
+
+					// Light Rotation!!!
+		
+			GL.PushMatrix();
+			Max2D.SetColor (Color.black);
+			GL.Begin(GL.TRIANGLES);
+			
+			Max2D.defaultMaterial.color = Color.black;
+			Max2D.defaultMaterial.SetPass(0);
+
+			float rotation = lightSource.transform.rotation.eulerAngles.z * Mathf.Deg2Rad + Mathf.PI / 4;
+			float squaredSize = Mathf.Sqrt((size.x * size.x) + (size.y * size.y));
+			
+			Vector2 p0 = Vector2D.RotToVec((double)rotation).ToVector2() * squaredSize;
+			Vector2 p1 = Vector2D.RotToVec((double)rotation + Mathf.PI / 2).ToVector2() * squaredSize;
+			Vector2 p2 = Vector2D.RotToVec((double)rotation + Mathf.PI).ToVector2() * squaredSize;
+			Vector2 p3 = Vector2D.RotToVec((double)rotation - Mathf.PI / 2).ToVector2() * squaredSize;
+
+			Vector2 up0 = p1 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2).ToVector2() * squaredSize;
+			Vector2 up1 = p1 +  Vector2D.RotToVec((double)rotation + Mathf.PI / 4).ToVector2() * squaredSize;
+			up1 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2).ToVector2() * squaredSize;
+
+			Vector2 up2 = p0 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4).ToVector2() * squaredSize;
+			up2 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2).ToVector2() * squaredSize;
+
+			Vector2 up3 = p0 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2).ToVector2() * squaredSize;
+
+			
+			Vector2 down0 = p3 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2 - Mathf.PI ).ToVector2() * squaredSize;
+			Vector2 down1 = p3 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI).ToVector2() * squaredSize;
+			down1 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2 - Mathf.PI).ToVector2() * squaredSize;
+
+			Vector2 down2 = p2 +  Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI).ToVector2() * squaredSize;
+			down2 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2 - Mathf.PI).ToVector2() * squaredSize;
+
+			Vector2 down3 = p2 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2 - Mathf.PI).ToVector2() * squaredSize;
+
+
+			Vector2 left0 = p0 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2 - Mathf.PI / 2).ToVector2() * squaredSize;
+			Vector2 left1 = p0 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4- Mathf.PI / 2).ToVector2() * squaredSize;
+			left1 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2- Mathf.PI / 2).ToVector2() * squaredSize;
+
+			Vector2 left2 =  p3 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4- Mathf.PI / 2).ToVector2() * squaredSize;
+			left2 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2- Mathf.PI / 2).ToVector2() * squaredSize;
+			
+			Vector2 left3 = p3 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2- Mathf.PI / 2).ToVector2() * squaredSize;
+
+
+			Vector2 right0 = p2 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2 + Mathf.PI / 2).ToVector2() * squaredSize;
+			Vector2 right1 = p2 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4+ Mathf.PI / 2).ToVector2() * squaredSize;
+			left1 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 + Mathf.PI / 2+ Mathf.PI / 2).ToVector2() * squaredSize;
+
+			Vector2 right2 =  p1 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4+ Mathf.PI / 2).ToVector2() * squaredSize;
+			left2 += Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2+ Mathf.PI / 2).ToVector2() * squaredSize;
+			
+			Vector2 right3 = p1 + Vector2D.RotToVec((double)rotation + Mathf.PI / 4 - Mathf.PI / 2+ Mathf.PI / 2).ToVector2() * squaredSize;
+
+			Max2DMatrix.DrawTriangle(right0, right1, right2, Vector2.zero, z);
+			Max2DMatrix.DrawTriangle(right2, right3, right0, Vector2.zero, z);
+
+			Max2DMatrix.DrawTriangle(left0, left1, left2, Vector2.zero, z);
+			Max2DMatrix.DrawTriangle(left2, left3, left0, Vector2.zero, z);
+
+		
+			Max2DMatrix.DrawTriangle(down0, down1, down2, Vector2.zero, z);
+			Max2DMatrix.DrawTriangle(down2, down3, down0, Vector2.zero, z);
+
+			
+			Max2DMatrix.DrawTriangle(up0, up1, up2, Vector2.zero, z);
+			Max2DMatrix.DrawTriangle(up2, up3, up0, Vector2.zero, z);
+
+			GL.End();
+			GL.PopMatrix();
+
+			Max2D.defaultMaterial.color = Color.white;
 		} else {
 			Max2D.DrawImage(lightSource.GetMaterial (), Vector2.zero, size, 0, z);
 		}
 
-		// Light Rotation!!!
-		
-		//GL.PushMatrix();
-		//Max2D.SetColor (Color.black);
-		
-		//Max2D.defaultMaterial.color = Color.black;
-		//Max2D.defaultMaterial.SetPass(0);
 
-		//float rotation = lightSource.transform.rotation.eulerAngles.z;
-		//float squaredSize = Mathf.Sqrt((size.x * size.x) + (size.y * size.y));
-		
-		//Vector2 p0 = Vector2D.RotToVec((double)rotation).ToVector2() * squaredSize;
-		//Vector2 p1 = Vector2D.RotToVec((double)rotation + Mathf.PI / 4).ToVector2() * squaredSize;
-		
-		//Max2DMatrix.DrawTriangle(Vector2.zero, p0, p1, Vector2.zero, z);
-		//Max2DMatrix.DrawTriangle(Vector2.zero, p1, p0, Vector2.zero, z);
-
-		//GL.End();
-		//GL.PopMatrix();
-
-		Max2D.defaultMaterial.color = Color.white;
 	}
 
 	 public static Vector3 GetPitchYawRollRad(Quaternion rotation)
@@ -146,17 +202,53 @@ public class LightingBuffer2D : MonoBehaviour {
 	void DrawCollideMask() {
 		float z = transform.position.z;
 
+		Vector2D offset = new Vector2D (-lightSource.transform.position);
+
+		Material material = LightingManager2D.Get().whiteSpriteMaterial;
+		// For Collider Sprite Mask
+		foreach (LightingCollider2D id in LightingCollider2D.GetList()) {
+			Sprite sprite = id.lightSprite;
+
+			if (sprite == null || id.spriteRenderer == null) {
+				continue;
+			}
+
+			if (id.maskType != LightingCollider2D.MaskType.Sprite) {
+				continue;
+			}
+
+			material.mainTexture = sprite.texture;
+
+			Vector2 p = id.transform.position;
+			Vector2 scale = id.transform.lossyScale;
+
+			scale.x *= (float)sprite.texture.width / sprite.texture.height;
+
+			if (id.spriteRenderer.flipX) {
+				scale.x = -scale.x;
+			}
+
+			if (id.spriteRenderer.flipY) {
+				scale.y = -scale.y;
+			}
+
+			Max2D.DrawImage(material, offset.ToVector2() + p, scale, id.transform.rotation.eulerAngles.z, z);
+		}
+
 		GL.PushMatrix();
         Max2D.defaultMaterial.SetPass(0);
         GL.Begin(GL.TRIANGLES);
         GL.Color(Color.white);
 
-		Vector2D offset = new Vector2D (-lightSource.transform.position);
-
+		// For Collider Mask
 		foreach (LightingCollider2D id in LightingCollider2D.GetList()) {
 			Mesh mesh = id.GetMesh();
 
 			if (mesh == null) {
+				continue;
+			}
+
+			if (id.maskType != LightingCollider2D.MaskType.Collider) {
 				continue;
 			}
 
@@ -170,7 +262,7 @@ public class LightingBuffer2D : MonoBehaviour {
 
 		Mesh tileMesh = GetTileMesh();	
 		
-		foreach (LightingTileMap id in LightingTileMap.GetList()) {
+		foreach (LightingTilemapCollider2D id in LightingTilemapCollider2D.GetList()) {
 			if (id.map == null) {
 				continue;
 			}
@@ -194,7 +286,7 @@ public class LightingBuffer2D : MonoBehaviour {
 					polyOffset += new Vector2D(id.area.position.x, id.area.position.y);
 					polyOffset += new Vector2D(id.transform.position.x, id.transform.position.y);
 					
-					if (id.mapType == LightingTileMap.MapType.Super) {
+					if (id.mapType == LightingTilemapCollider2D.MapType.SuperTilemapEditor) {
 						polyOffset += new Vector2D(-id.area.size.x / 2, -id.area.size.y / 2);
 					}
 
@@ -228,31 +320,34 @@ public class LightingBuffer2D : MonoBehaviour {
 		GL.Color(Color.black);
 
 		foreach (LightingCollider2D id in LightingCollider2D.GetList()) {
-			Polygon2D poly = id.GetPolygon();
-			if (poly == null) {
+			List<Polygon2D> polygons = id.GetPolygons();
+			if (polygons.Count < 1) {
 				continue;
 			}
 
-			poly = poly.ToWorldSpace (id.gameObject.transform);
-			poly = poly.ToOffset (new Vector2D (-lightSource.transform.position));
+			foreach(Polygon2D polygon in polygons) {
+				Polygon2D poly = polygon;
+				poly = poly.ToWorldSpace (id.gameObject.transform);
+				poly = poly.ToOffset (new Vector2D (-lightSource.transform.position));
 
-			if (poly.PointInPoly (zero)) {
-				continue;
-			}
+				if (poly.PointInPoly (zero)) {
+					continue;
+				}
 
-			foreach (Pair2D p in Pair2D.GetList(poly.pointsList)) {
-				Vector2D vA = p.A.Copy();
-				Vector2D vB = p.B.Copy();
-				
-				vA.Push (Vector2D.Atan2 (vA, zero), 25);
-				vB.Push (Vector2D.Atan2 (vB, zero), 25);
-				
-				Max2DMatrix.DrawTriangle(p.A ,p.B, vA, zero, z);
-				Max2DMatrix.DrawTriangle(vA, vB, p.B, zero, z);
+				foreach (Pair2D p in Pair2D.GetList(poly.pointsList)) {
+					Vector2D vA = p.A.Copy();
+					Vector2D vB = p.B.Copy();
+					
+					vA.Push (Vector2D.Atan2 (vA, zero), 25);
+					vB.Push (Vector2D.Atan2 (vB, zero), 25);
+					
+					Max2DMatrix.DrawTriangle(p.A ,p.B, vA, zero, z);
+					Max2DMatrix.DrawTriangle(vA, vB, p.B, zero, z);
+				}
 			}
 		}
 
-		foreach (LightingTileMap id in LightingTileMap.GetList()) {
+		foreach (LightingTilemapCollider2D id in LightingTilemapCollider2D.GetList()) {
 			if (id.map == null) {
 				continue;
 			}
@@ -278,7 +373,7 @@ public class LightingBuffer2D : MonoBehaviour {
 					polyOffset += new Vector2D(id.area.position.x, id.area.position.y);
 					polyOffset += new Vector2D(id.transform.position.x, id.transform.position.y);
 
-					if (id.mapType == LightingTileMap.MapType.Super) {
+					if (id.mapType == LightingTilemapCollider2D.MapType.SuperTilemapEditor) {
 						polyOffset += new Vector2D(-id.area.size.x / 2, -id.area.size.y / 2);
 					}
 
@@ -318,51 +413,55 @@ public class LightingBuffer2D : MonoBehaviour {
 		GL.Color(Color.white);
 
 		foreach (LightingCollider2D id in LightingCollider2D.GetList()) {
-			Polygon2D poly = id.GetPolygon();
-			if (poly == null) {
-				continue;
-			}
-			
-			poly = poly.ToWorldSpace (id.gameObject.transform);
-			poly = poly.ToOffset (new Vector2D (-lightSource.transform.position));
-			
-			if (poly.PointInPoly (zero)) {
+			List<Polygon2D> polygons = id.GetPolygons();
+			if (polygons.Count < 1) {
 				continue;
 			}
 
-			foreach (Pair2D p in Pair2D.GetList(poly.pointsList)) {
-				Vector2D vA = p.A.Copy();
-				Vector2D pA = p.A.Copy();
+			foreach(Polygon2D polygon in polygons) {
+				Polygon2D poly = polygon;
+			
+				poly = poly.ToWorldSpace (id.gameObject.transform);
+				poly = poly.ToOffset (new Vector2D (-lightSource.transform.position));
+				
+				if (poly.PointInPoly (zero)) {
+					continue;
+				}
 
-				Vector2D vB = p.B.Copy();
-				Vector2D pB = p.B.Copy();
+				foreach (Pair2D p in Pair2D.GetList(poly.pointsList)) {
+					Vector2D vA = p.A.Copy();
+					Vector2D pA = p.A.Copy();
 
-				float angleA = (float)Vector2D.Atan2 (vA, zero);
-				float angleB = (float)Vector2D.Atan2 (vB, zero);
+					Vector2D vB = p.B.Copy();
+					Vector2D pB = p.B.Copy();
 
-				vA.Push (angleA, lightSource.lightSize);
-				pA.Push (angleA - Mathf.Deg2Rad * occlusionSize, lightSource.lightSize);
+					float angleA = (float)Vector2D.Atan2 (vA, zero);
+					float angleB = (float)Vector2D.Atan2 (vB, zero);
 
-				vB.Push (angleB, lightSource.lightSize);
-				pB.Push (angleB + Mathf.Deg2Rad * occlusionSize, lightSource.lightSize);
+					vA.Push (angleA, lightSource.lightSize);
+					pA.Push (angleA - Mathf.Deg2Rad * occlusionSize, lightSource.lightSize);
 
-				GL.TexCoord2(uv0, uv0);
-				GL.Vertex3((float)p.A.x,(float)p.A.y, z);
-				GL.TexCoord2(uv1, uv0);
-				GL.Vertex3((float)vA.x, (float)vA.y, z);
-				GL.TexCoord2((float)uv0, uv1);
-				GL.Vertex3((float)pA.x,(float)pA.y, z);
+					vB.Push (angleB, lightSource.lightSize);
+					pB.Push (angleB + Mathf.Deg2Rad * occlusionSize, lightSource.lightSize);
 
-				GL.TexCoord2(uv0, uv0);
-				GL.Vertex3((float)p.B.x,(float)p.B.y, z);
-				GL.TexCoord2(uv1, uv0);
-				GL.Vertex3((float)vB.x, (float)vB.y, z);
-				GL.TexCoord2(uv0, uv1);
-				GL.Vertex3((float)pB.x, (float)pB.y, z);
+					GL.TexCoord2(uv0, uv0);
+					GL.Vertex3((float)p.A.x,(float)p.A.y, z);
+					GL.TexCoord2(uv1, uv0);
+					GL.Vertex3((float)vA.x, (float)vA.y, z);
+					GL.TexCoord2((float)uv0, uv1);
+					GL.Vertex3((float)pA.x,(float)pA.y, z);
+
+					GL.TexCoord2(uv0, uv0);
+					GL.Vertex3((float)p.B.x,(float)p.B.y, z);
+					GL.TexCoord2(uv1, uv0);
+					GL.Vertex3((float)vB.x, (float)vB.y, z);
+					GL.TexCoord2(uv0, uv1);
+					GL.Vertex3((float)pB.x, (float)pB.y, z);
+				}
 			}
 		}
 		
-		foreach (LightingTileMap id in LightingTileMap.GetList()) {
+		foreach (LightingTilemapCollider2D id in LightingTilemapCollider2D.GetList()) {
 			if (id.map == null) {
 				continue;
 			}
@@ -388,7 +487,7 @@ public class LightingBuffer2D : MonoBehaviour {
 					polyOffset += new Vector2D(id.area.position.x, id.area.position.y);
 					polyOffset += new Vector2D(id.transform.position.x, id.transform.position.y);
 
-					if (id.mapType == LightingTileMap.MapType.Super) {
+					if (id.mapType == LightingTilemapCollider2D.MapType.SuperTilemapEditor) {
 						polyOffset += new Vector2D(-id.area.size.x / 2, -id.area.size.y / 2);
 					}
 
@@ -482,7 +581,7 @@ public class LightingBuffer2D : MonoBehaviour {
 	}
 
 	void SetUpRenderMaterial() {
-		material = new Material (Shader.Find (LightingManager2D.shaderPath + "Particles/Additive"));
+		material = new Material (Shader.Find (Max2D.shaderPath + "Particles/Additive"));
 		material.mainTexture = renderTexture;
 	}
 

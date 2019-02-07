@@ -5,6 +5,8 @@ using System.Linq;
 
 [ExecuteInEditMode]
 public class LightingCollider2D : MonoBehaviour {
+	public enum MaskType {None, Sprite, Collider};
+	public MaskType maskType = MaskType.Sprite;
 	public bool dayHeight = false;
 	public float height = 1f;
 
@@ -15,7 +17,7 @@ public class LightingCollider2D : MonoBehaviour {
 	//public bool lighten = false;
 	//public bool darken = false;
 
-	private Polygon2D polygon;
+	private List<Polygon2D> polygons = null;
 	private Mesh mesh;
 	private float meshDistance = 0f;
 
@@ -28,6 +30,9 @@ public class LightingCollider2D : MonoBehaviour {
 	public List<Polygon2D> collisions = new List<Polygon2D>();
 
 	public static List<LightingCollider2D> list = new List<LightingCollider2D>();
+
+	public Sprite lightSprite;
+	public SpriteRenderer spriteRenderer;
 
 	public void OnEnable() {
 		list.Add(this);
@@ -47,11 +52,16 @@ public class LightingCollider2D : MonoBehaviour {
 		
 		mesh = GetMesh();
 		
-		// Optimization
-		if (GetPolygon() != null) {
-			foreach (Vector2D id in GetPolygon().pointsList) {
+		// Optimization -- Update For Polygons
+		if (GetPolygons().Count > 0) {
+			foreach (Vector2D id in GetPolygons()[0].pointsList) {
 				meshDistance = Mathf.Max(meshDistance, Vector2.Distance(id.ToVector2(), Vector2.zero));
 			}
+		}
+
+		spriteRenderer = GetComponent<SpriteRenderer>();
+		if (spriteRenderer != null) {
+			lightSprite = spriteRenderer.sprite;
 		}
 	}
 
@@ -84,24 +94,24 @@ public class LightingCollider2D : MonoBehaviour {
 
 	public Mesh GetMesh() {
 		if (mesh == null) {
-			if (GetPolygon() != null) {
-				if (GetPolygon().pointsList.Count > 2) {
-					mesh = PolygonTriangulator2D.Triangulate (GetPolygon(), Vector2.zero, Vector2.zero, PolygonTriangulator2D.Triangulation.Advanced);
+			if (GetPolygons().Count > 0) {
+				if (GetPolygons()[0].pointsList.Count > 2) {
+					// Triangulate Polygon List?
+					mesh = PolygonTriangulator2D.Triangulate (GetPolygons()[0], Vector2.zero, Vector2.zero, PolygonTriangulator2D.Triangulation.Advanced);
 				}
 			}
 		}
 		return(mesh);
 	}
 
-	public Polygon2D GetPolygon() {
-		if (polygon == null) {
-			List<Polygon2D> polygons = Polygon2DList.CreateFromGameObject (gameObject);
+	public List<Polygon2D> GetPolygons() {
+		if (polygons == null) {
+			polygons = Polygon2DList.CreateFromGameObject (gameObject);
 			if (polygons.Count > 0) {
-				polygon = polygons[0];
 			} else {
 				Debug.LogWarning("SmartLighting2D: LightingCollider2D object is missing Collider Component");
 			}
 		}
-		return(polygon);
+		return(polygons);
 	}
 }

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(LightingTileMap))]
+[CustomEditor(typeof(LightingTilemapCollider2D))]
 public class Lighting2DTilemapEditor : Editor {
 	override public void OnInspectorGUI() {
-		LightingTileMap script = target as LightingTileMap;
+		LightingTilemapCollider2D script = target as LightingTilemapCollider2D;
 
 		EditorGUI.BeginDisabledGroup(true);
 		EditorGUILayout.EnumPopup("Preset", LightingManager2D.Get().preset);
 		EditorGUI.EndDisabledGroup();
 
-		script.mapType = (LightingTileMap.MapType)EditorGUILayout.EnumPopup("MapType", script.mapType);
+		script.mapType = (LightingTilemapCollider2D.MapType)EditorGUILayout.EnumPopup("MapType", script.mapType);
 		
 		script.dayHeight = EditorGUILayout.Toggle("Day Height", script.dayHeight);
 		if (script.dayHeight)  {

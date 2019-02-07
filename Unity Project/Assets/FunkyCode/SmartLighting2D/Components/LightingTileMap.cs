@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [ExecuteInEditMode]
-public class LightingTileMap : MonoBehaviour {
-	public enum MapType {Default, Super};
+public class LightingTilemapCollider2D : MonoBehaviour {
+	public enum MapType {Default, SuperTilemapEditor};
 	public MapType mapType = MapType.Default;
 	public bool dayHeight = false;
 	public float height = 1;
@@ -18,7 +18,7 @@ public class LightingTileMap : MonoBehaviour {
 
 	public bool[,] map;
 
-	public static List<LightingTileMap> list = new List<LightingTileMap>();
+	public static List<LightingTilemapCollider2D> list = new List<LightingTilemapCollider2D>();
 
 	public void OnEnable() {
 		list.Add(this);
@@ -28,8 +28,8 @@ public class LightingTileMap : MonoBehaviour {
 		list.Remove(this);
 	}
 
-	static public List<LightingTileMap> GetList() {
-		List<LightingTileMap> result = new List<LightingTileMap>(list);
+	static public List<LightingTilemapCollider2D> GetList() {
+		List<LightingTilemapCollider2D> result = new List<LightingTilemapCollider2D>(list);
 		return(result);
 	}
 
@@ -53,9 +53,27 @@ public class LightingTileMap : MonoBehaviour {
 
 			break;
 
-			case MapType.Super:
-		
-				
+			case MapType.SuperTilemapEditor:
+			/*
+				CreativeSpore.SuperTilemapEditor.STETilemap tilemap = GetComponent<CreativeSpore.SuperTilemapEditor.STETilemap>();
+
+				map = new bool[tilemap.GridWidth + 2, tilemap.GridHeight + 2];
+
+				area.position = new Vector3Int((int)tilemap.MapBounds.center.x, (int)tilemap.MapBounds.center.y, 0);
+
+				area.size = new Vector3Int((int)(tilemap.MapBounds.extents.x + 1) * 2, (int)(tilemap.MapBounds.extents.y + 1) * 2, 0);
+
+				for(int x = 0; x <= tilemap.GridWidth; x++) {
+					for(int y = 0; y <= tilemap.GridHeight; y++) {
+						int tileX = x + area.position.x - area.size.x / 2;
+						int tileY = y + area.position.y - area.size.y / 2;
+						if(tilemap.GetTile(tileX, tileY) == null) {
+							continue;
+						}
+						map[x, y] = true;
+					}
+				}
+				 */
 			break;
 		}
 

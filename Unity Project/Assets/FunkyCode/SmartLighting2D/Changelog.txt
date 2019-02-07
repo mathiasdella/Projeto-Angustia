@@ -1,0 +1,26 @@
+﻿### Beta 1.0.2 - 07.12.2018
+ [ADDED] Tilemap support (2018.1 or higher)
+ [ADDED] Lighting renderer component
+ [ADDED] Flicker effect component
+ [ADDED] Color blending effect component
+ [ADDED] Light "alpha" parameter
+ [ADDED] Lighting collider masking modes
+ [ADDED] 5 new demo scenes
+ [FIXED] Screen artifacts
+ [CHANGED] Imporved lighting performance
+ [CHANGED] Imporived editor run-time editing
+
+ [SUPPORT] Unity 2018.3 Support
+
+
+### Beta 1.0.1 - 23.11.2018
+ [ADDED] LightingSprite component
+ [FIXED] Camera rotation issues
+ [CHANGED] Improved occlusion
+ [CHANGED] Improved day shadows
+
+ [INFO] Asset is no longer free
+
+
+### Beta 1.0.0 - 05.11.2018
+ [INFO] Initial beta release 

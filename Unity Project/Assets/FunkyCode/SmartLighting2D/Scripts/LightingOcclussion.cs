@@ -20,35 +20,39 @@ public class LightingOcclussion
 			}
 			
 			// Do not call Create From Collider
-			Polygon2D poly = id.GetPolygon();
-			poly = poly.ToWorldSpace (id.gameObject.transform);
+			List<Polygon2D> polygons = id.GetPolygons();
 
-			poly.Normalize();
+			foreach(Polygon2D polygon in polygons) {
+				Polygon2D poly = polygon;
+				poly = poly.ToWorldSpace (id.gameObject.transform);
 
-			Vector2D first = null;
+				poly.Normalize();
 
-			List<Pair2D> iterate1 =  Pair2D.GetList(poly.pointsList);
-			List<Pair2D> iterate2 =  Pair2D.GetList(PreparePolygon(poly, id.occlusionSize).pointsList);
+				Vector2D first = null;
 
-			int i = 0;
-			foreach (Pair2D pA in iterate1) {
-				if (id.edgeCollider2D == true && first == null) {
-					first = pA.A;
-					continue;
+				List<Pair2D> iterate1 =  Pair2D.GetList(poly.pointsList);
+				List<Pair2D> iterate2 =  Pair2D.GetList(PreparePolygon(poly, id.occlusionSize).pointsList);
+
+				int i = 0;
+				foreach (Pair2D pA in iterate1) {
+					if (id.edgeCollider2D == true && first == null) {
+						first = pA.A;
+						continue;
+					}
+
+					Pair2D pB = iterate2[i];
+
+					GL.TexCoord2 (uv0, uv0);
+					Max2D.Vertex3 (pA.A + offset, z);
+					GL.TexCoord2 (uv1, uv0);
+					Max2D.Vertex3 (pA.B + offset, z);
+					GL.TexCoord2 (uv1, uv1);
+					Max2D.Vertex3 (pB.B + offset, z);
+					GL.TexCoord2 (uv0, uv1);
+					Max2D.Vertex3 (pB.A + offset, z);
+
+					i ++;
 				}
-
-				Pair2D pB = iterate2[i];
-
-				GL.TexCoord2 (uv0, uv0);
-				Max2D.Vertex3 (pA.A + offset, z);
-				GL.TexCoord2 (uv1, uv0);
-				Max2D.Vertex3 (pA.B + offset, z);
-				GL.TexCoord2 (uv1, uv1);
-				Max2D.Vertex3 (pB.B + offset, z);
-				GL.TexCoord2 (uv0, uv1);
-				Max2D.Vertex3 (pB.A + offset, z);
-
-				i ++;
 			}
 		}
 		GL.End ();
@@ -64,43 +68,47 @@ public class LightingOcclussion
 			}
 
 			// Do not call Create From Collider
-			Polygon2D poly = id.GetPolygon();
-			poly = poly.ToWorldSpace (id.gameObject.transform);
+			List<Polygon2D> polygons = id.GetPolygons();
+			
+			foreach(Polygon2D polygon in polygons) {
+				Polygon2D poly = polygon;
+				poly = poly.ToWorldSpace (id.gameObject.transform);
 
-			poly.Normalize();
+				poly.Normalize();
 
-			foreach (DoublePair2D p in DoublePair2D.GetList(poly.pointsList)) {
-				Vector2D vA = p.A + offset;
-				Vector2D vB = p.B + offset;
-				Vector2D vC = p.B + offset;
+				foreach (DoublePair2D p in DoublePair2D.GetList(poly.pointsList)) {
+					Vector2D vA = p.A + offset;
+					Vector2D vB = p.B + offset;
+					Vector2D vC = p.B + offset;
 
-				Vector2D pA = p.A + offset;
-				Vector2D pB = p.B + offset;
+					Vector2D pA = p.A + offset;
+					Vector2D pB = p.B + offset;
 
-				vA.Push (Vector2D.Atan2 (p.A, p.B) - Mathf.PI / 2, id.occlusionSize);
-				vB.Push (Vector2D.Atan2 (p.A, p.B) - Mathf.PI / 2, id.occlusionSize);
-				vC.Push (Vector2D.Atan2 (p.B, p.C) - Mathf.PI / 2, id.occlusionSize);
+					vA.Push (Vector2D.Atan2 (p.A, p.B) - Mathf.PI / 2, id.occlusionSize);
+					vB.Push (Vector2D.Atan2 (p.A, p.B) - Mathf.PI / 2, id.occlusionSize);
+					vC.Push (Vector2D.Atan2 (p.B, p.C) - Mathf.PI / 2, id.occlusionSize);
 
-				GL.TexCoord2 (uv0, uv0);
-				Max2D.Vertex3 (pB, z);
-				GL.TexCoord2 (0.5f - uv0, uv0);
-				Max2D.Vertex3 (pA, z);
-				GL.TexCoord2 (0.5f - uv0, uv1);
-				Max2D.Vertex3 (vA, z);
+					GL.TexCoord2 (uv0, uv0);
+					Max2D.Vertex3 (pB, z);
+					GL.TexCoord2 (0.5f - uv0, uv0);
+					Max2D.Vertex3 (pA, z);
+					GL.TexCoord2 (0.5f - uv0, uv1);
+					Max2D.Vertex3 (vA, z);
 
-				GL.TexCoord2 (uv0, uv1);
-				Max2D.Vertex3 (vA, z);
-				GL.TexCoord2 (0.5f - uv0, uv1);
-				Max2D.Vertex3 (vB, z);
-				GL.TexCoord2 (0.5f - uv0, uv0);
-				Max2D.Vertex3 (pB, z);
-	
-				GL.TexCoord2 (uv1, uv0);
-				Max2D.Vertex3 (vB, z);
-				GL.TexCoord2 (0.5f - uv0, uv0);
-				Max2D.Vertex3 (pB, z);
-				GL.TexCoord2 (0.5f - uv0, uv1);
-				Max2D.Vertex3 (vC, z);
+					GL.TexCoord2 (uv0, uv1);
+					Max2D.Vertex3 (vA, z);
+					GL.TexCoord2 (0.5f - uv0, uv1);
+					Max2D.Vertex3 (vB, z);
+					GL.TexCoord2 (0.5f - uv0, uv0);
+					Max2D.Vertex3 (pB, z);
+		
+					GL.TexCoord2 (uv1, uv0);
+					Max2D.Vertex3 (vB, z);
+					GL.TexCoord2 (0.5f - uv0, uv0);
+					Max2D.Vertex3 (pB, z);
+					GL.TexCoord2 (0.5f - uv0, uv1);
+					Max2D.Vertex3 (vC, z);
+				}
 			}
 		}
 		GL.End ();
@@ -110,7 +118,7 @@ public class LightingOcclussion
 		LightingManager2D.Get().occlusionEdgeMaterial.SetPass (0);
 		GL.Begin (GL.TRIANGLES);
 
-		foreach (LightingTileMap id in LightingTileMap.GetList()) {
+		foreach (LightingTilemapCollider2D id in LightingTilemapCollider2D.GetList()) {
 			if (id.map == null) {
 				continue;
 			}
@@ -136,7 +144,7 @@ public class LightingOcclussion
 		GL.PopMatrix ();
 	}
 
-	static void DrawTileOcclussion(Vector2D offset, float z, LightingTileMap id) {
+	static void DrawTileOcclussion(Vector2D offset, float z, LightingTilemapCollider2D id) {
 		Polygon2D poly = Polygon2DList.CreateFromRect(new Vector2(0.5f, 0.5f));
 
 		foreach (DoublePair2D p in DoublePair2D.GetList(poly.pointsList)) {
